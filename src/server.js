@@ -20,13 +20,7 @@ export const setupServer = () => {
         }),
     );
 
-    app.use('*', (req, res, next) => {
-        res.status(404).json({
-            message: 'Not found'
-        });
-    });
-
-    app.use('/contacts', async (req, res) => {
+    app.get('/contacts', async (req, res) => {
         const contacts = await getAllContacts();
 
         res.status(200).json({
@@ -49,6 +43,12 @@ export const setupServer = () => {
           data: contact,
         });
       });
+
+      app.use('*', (req, res, next) => {
+        res.status(404).json({
+            message: 'Not found'
+        });
+    });
 
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
