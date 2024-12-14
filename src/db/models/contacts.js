@@ -31,3 +31,32 @@ const contactsSchema = new Schema(
 );
 
 export const ContactsCollection = model('contacts', contactsSchema);
+
+const contactsPatchSchema = new Schema(
+    {
+        name: {
+            type: String,
+        },
+        phoneNumber: {
+            type: String,
+        },
+        email: {
+            type: String,
+        },
+        isFavourite: {
+            type: Boolean,
+            default: false,
+        },
+        contactType: {
+            type: String,
+            default: 'personal',
+            enum: ['work', 'home', 'personal'],
+        },
+    },
+    {
+        timestamps: true,
+        versionKey: false,
+    },
+);
+
+export const ContactsPatchCollectin = model('contacts_patch', contactsPatchSchema);
