@@ -1,4 +1,4 @@
-import { ContactsCollection, ContactsPatchCollectin } from "../db/models/contacts.js";
+import { ContactsCollection } from "../db/models/contacts.js";
 
 export const getAllContacts = async () => {
     const contacts = await ContactsCollection.find();
@@ -15,22 +15,23 @@ export const createContact = async (payload) => {
     return contact;
 };
 
-export const updateContact = async (contactId, payload, options = {}) => {
-    const rawResult = await ContactsPatchCollectin.findOneAndUpdate(
+export const updateContact = async (contactId, payload = {}) => {
+  const rawResult = await ContactsCollection.findOneAndUpdate(
       { _id: contactId },
       payload,
       {
-        new: true,
-        includeResultMetadata: true,
-        ...options,
+      new: true,
+      includeResultMetadata: true,
       },
     );
   
-    if (!rawResult) return null;
-  
-    return rawResult; // Повертаємо весь результат
+    if (!rawResult || !rawResult.value) return null;
+
+  return {
+    contact: rawResult.value,
+    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
-  
+};
 
 export const deleteContact = async (contactId) => {
     const contact = await ContactsCollection.findByIdAndDelete({
