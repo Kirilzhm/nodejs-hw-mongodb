@@ -13,13 +13,13 @@ export const authenticate = async (req, res, next) => {
 
     if (bearer !== 'Bearer' || !token) throw createHttpError(401, 'Auth header should be of type Bearer');
 
-    const session = SessionsCollection.findOne({ accessToken: token });
+    const session = await SessionsCollection.findOne({ accessToken: token });
 
     if (!session) throw createHttpError(401, 'Session not found');
 
-    const isAccesTokenExpired = new Date() > new Date(session.accessTokenValidUntil);
+    const isAccessTokenExpired = new Date() > new Date(session.accessTokenValidUntil);
 
-    if (!isAccesTokenExpired) throw createHttpError(401, 'Access token expired');
+    if (isAccessTokenExpired) throw createHttpError(401, 'Access token expired');
 
     const user = await UsersCollection.findById(session.userId);
 
