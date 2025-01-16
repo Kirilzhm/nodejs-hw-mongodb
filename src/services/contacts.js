@@ -32,14 +32,15 @@ export const getContactById = async (contactId, userId) => {
     return contact;
 };
 
-export const createContact = async (payload, userId) => {
-    const contact = await ContactsCollection.create(
+export const createContact = async (userId, payload = {}) => {
+    const contact = await ContactsCollection.create({
       ...payload,
-      userId);
+      userId
+    });
     return contact;
 };
 
-export const updateContact = async (contactId, payload = {}, userId) => {
+export const updateContact = async (contactId, userId, payload = {}) => {
   const rawResult = await ContactsCollection.findOneAndUpdate(
       { _id: contactId, userId },
       payload,
@@ -52,7 +53,7 @@ export const updateContact = async (contactId, payload = {}, userId) => {
     if (!rawResult || !rawResult.value) return null;
 
   return {
-    contact: rawResult.value,
+    contact: rawResult.value ? rawResult.value._doc : rawResult._doc,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
 };
