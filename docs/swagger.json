@@ -170,51 +170,10 @@
             "schema": {
               "type": "string",
               "enum": [
-                "work",
-                "home",
-                "personal"
+                "asc",
+                "desc"
               ],
-              "example": "personal"
-            }
-          },
-          {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string",
-              "example": "John Doe"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "schema": {
-              "type": "string",
-              "example": "johnDoe@gmail.com"
-            }
-          },
-          {
-            "in": "query",
-            "name": "isFavourite",
-            "schema": {
-              "type": "boolean",
-              "example": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "createdAt",
-            "schema": {
-              "type": "string",
-              "example": "2025-01-16T13:11:13.771Z"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updatedAt",
-            "schema": {
-              "type": "string",
-              "example": "2025-01-16T14:56:00.494Z"
+              "example": "asc"
             }
           }
         ],
@@ -351,6 +310,9 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -454,6 +416,9 @@
           },
           "401": {
             "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       },
@@ -481,11 +446,14 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Delete contact by id"
           },
           "401": {
             "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
           }
         }
       }
@@ -586,6 +554,43 @@
                     "message": {
                       "type": "string",
                       "example": "Access token expired"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not found Id",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "NotFoundError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Contact not found"
                     }
                   }
                 }
